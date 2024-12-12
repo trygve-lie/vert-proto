@@ -1,0 +1,142 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+	font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+	"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+ul {
+	list-style: none;
+}
+
+legend {
+	padding: 0;
+	display: table;
+}
+
+fieldset {
+	border: 0;
+	padding: 0.01em 0 0 0;
+	margin: 0;
+	min-width: 0;
+}
+
+/* Grid */
+.page {
+	display: grid;
+	grid-template-areas:
+	  "header header"
+	  "aside main";
+	grid-template-columns: 1fr 4fr;
+	background-color: #7fa99b;
+}
+
+.header {
+	grid-area: header;
+	height: 8vh;
+	padding: 15px;
+}
+
+.aside {
+	grid-area: aside;
+	height: 92vh;
+	padding: 0 15px;
+}
+
+.main {
+	grid-area: main;
+	height: 92vh;
+	padding: 0 15px 15px 0;
+}
+
+
+.slot {
+	border: dotted 2px #394a51;
+}
+
+#slot-aside {
+	margin-top: 15px;
+	height: 150px;
+}
+
+#slot-main {
+	height: 100%;
+}
+
+#slot-main p {
+	margin-top: 15px;
+}
+
+/* Navigation */
+.navigation li {
+	border-bottom: solid 1px #394a51;
+}
+
+.navigation li:first-child {
+	border-top: solid 1px #394a51;
+}
+
+.navigation li a {
+	display: block;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+/* Counter */
+.counter {
+	border-bottom: solid 1px #394a51;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+
+/* Front */
+.front {
+	background-color: #fbf2d5;
+	height: 100%;
+	padding: 15px;
+}
+
+
+.vertical-a {
+	background-color: #aedadd;
+	height: 100%;
+	padding: 15px;
+}
+
+.vertical-b {
+	background-color: #aed09e;
+	height: 100%;
+	padding: 15px;
+}
+
+
+
+.field {
+	padding-top: 0.4rem;
+}
+
+
+
+
+.orange h1 {
+	color: orange;
+}
+
+.blue h1 {
+	color: blue;
+}
+
+.large h1 {
+	font-size: 48px;
+}
+
+.small h1 {
+	font-size: 14px;
+}

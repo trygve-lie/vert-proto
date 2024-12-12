@@ -1,0 +1,4 @@
+{
+    "name": "vert-prototype",
+    "workspaces": ["./packages/*"]
+}
