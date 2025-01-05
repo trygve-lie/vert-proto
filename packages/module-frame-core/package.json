@@ -1,0 +1,36 @@
+{
+    "name": "module-application",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+      "./controller": {
+        "default": "./src/frame-controller.js"
+      },
+      "./document": {
+        "default": "./src/document.js"
+      },
+      "./frame": {
+        "default": "./src/frame.js"
+      }
+    },
+    "scripts": {
+      "start": "node server.js",
+      "build": "node build.js"
+    },
+    "author": "Trygve Lie",
+    "license": "MIT",
+    "description": "",
+    "dependencies": {
+        "module-application": "*",  
+        "horizontal-messaging": "*",
+        "horizontal-header": "*",
+        "@fastify/static": "8.0.3",
+        "@lit-labs/ssr": "3.2.2",
+        "lit": "3.2.1",
+        "fastify": "5.2.0"
+    },
+    "devDependencies": {
+      "esbuild":"0.24.2"
+    }
+  }
+  

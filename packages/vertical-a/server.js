@@ -1,79 +1,102 @@
+import { RenderResultReadable } from '@lit-labs/ssr/lib/render-result-readable.js';
+import { render, html } from '@lit-labs/ssr';
+
 import fileServer from '@fastify/static';
 import Fastify from 'fastify';
 
-import counter from 'horizontal-counter';
-import header from 'horizontal-header';
+import document from 'module-application/document';
+import frame from 'module-application/frame';
 
 const app = Fastify({
   logger: true
-})
+});
 
 app.get('/a/', async function handler (request, reply) {
     reply.headers({
-        "content-type": "text/html;charset=UTF-8",
+        "content-type": "text/html;charset=utf-8",
     });
     
-    return `<!doctype html>
-            <html lang="en">
-              <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-                <title>Vertical A</title>
-                <link rel="stylesheet" href="http://localhost:3000/cdn/styles.css">
-                <script src="http://localhost:3000/cdn/navigation.js"></script>
-                <script src="http://localhost:3000/cdn/global.js" type="module"></script>
-                <script src="http://localhost:3011/a/static/client.js" id="script" type="module"></script>
-              </head>
-              <body class="page">
-             
-                ${header}
-                
-                <aside class="aside">
-                  <ul class="navigation">
-                    <li><a href='/a/'>Vertical A</a></li>
-                    <li><a href='/b/'>Vertical B</a></li>
-                    <li><a href='/'>Home</a></li>
-                  </ul>
-                  ${counter}
-                  <div id="slot-aside" class="slot">
+    const page = html`
+      <app-frame>
+        <main slot="main">
+          <h2>Vertical A</h2>
+        </main>
+        <div slot="search">
+          <h3>Vertical A search:</h3>
+          <form method="get" action="/a/search/">
+            <input type="search" name="q" value="${request.query?.q}" placeholder="Search..">
+            <fieldset>
+              <legend>Select type:</legend>
+              <div class="field">
+                <input type="radio" id="black" name="type" value="black" ?checked="${(request.query?.type === 'black')}">
+                <label for="black">Type A</label>
+              </div>
+              <div class="field">
+                <input type="radio" id="orange" name="type" value="orange" ?checked="${(request.query?.type === 'orange')}">
+                <label for="orange">Type B</label>
+              </div>
+              <div class="field">
+                <input type="radio" id="blue" name="type" value="blue" ?checked="${(request.query?.type === 'blue')}">
+                <label for="blue">Type C</label>
+              </div>
+            </fieldset>
+            <input type="submit" value="search">
+          </form>
+        </div>
+      </app-frame>
+    `;
 
-                    <form class="vertical-a" id="selector">
-                      <fieldset>
-                        <legend>Select title color:</legend>
-                        <div class="field">
-                          <input type="radio" id="black" name="color" value="black" checked />
-                          <label for="black">Black</label>
-                        </div>
-                        <div class="field">
-                          <input type="radio" id="orange" name="color" value="orange" />
-                          <label for="orange">Orange</label>
-                        </div>
-                        <div class="field">
-                          <input type="radio" id="blue" name="color" value="blue" />
-                          <label for="blue">Blue</label>
-                        </div>
-                      </fieldset>
-                    </form>
+    return new RenderResultReadable(render(document(page), {
+      deferHydration: true
+    }));
+});
 
-                  </div>
-                </aside>
+app.get('/a/search/', async function handler (request, reply) {
+  reply.headers({
+      "content-type": "text/html;charset=utf-8",
+  });
+  
+  const page = html`
+    <app-frame>
+      <main slot="main">
+        <h2>Vertical A search: ${request.query.q}</h2>
+        <ul class="search-result">
+          <li class="${request.query?.type}">Item foo</li>
+          <li class="${request.query?.type}">Item bar</li>
+          <li class="${request.query?.type}">Item xyz</li>
+          <li class="${request.query?.type}">Item foo</li>
+          <li class="${request.query?.type}">Item bar</li>
+          <li class="${request.query?.type}">Item xyz</li>
+        </ul>
+      </main>
+      <div slot="search">
+        <h3>Vertical A search:</h3>
+        <form method="get" action="/a/search/">
+          <input type="search" name="q" value="${request.query?.q}" placeholder="Search..">
+          <fieldset>
+            <legend>Select type:</legend>
+            <div class="field">
+              <input type="radio" id="black" name="type" value="black" ?checked="${(request.query?.type === 'black')}">
+              <label for="black">Type A</label>
+            </div>
+            <div class="field">
+              <input type="radio" id="orange" name="type" value="orange" ?checked="${(request.query?.type === 'orange')}">
+              <label for="orange">Type B</label>
+            </div>
+            <div class="field">
+              <input type="radio" id="blue" name="type" value="blue" ?checked="${(request.query?.type === 'blue')}">
+              <label for="blue">Type C</label>
+            </div>
+          </fieldset>
+          <input type="submit" value="search">
+        </form>
+      </div>
+    </app-frame>
+  `;
 
-                <main class="main">
-                  <div id="slot-main" class="slot">
-
-                    <div class="vertical-a black" id="content">
-                      <h1>Vertical A</h1>
-                      <p>This vertical can be written in ex Vue.js if that is of interest.</p>
-                    </div>
-                    
-                  </div>
-                </main>
-
-              </body>
-
-            </html>`;
+  return new RenderResultReadable(render(document(page), {
+    deferHydration: true
+  }));
 });
 
 app.register(fileServer, {

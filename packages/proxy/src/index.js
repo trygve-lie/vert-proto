@@ -24,14 +24,19 @@ class LinkRewriter {
 
 // Rewrite component element. We fetch component from remote source
 class ComponentRewriter {
-	constructor(url) {
-		this.url = url;
-	}
+	async element(element) {
+		// NB: Safeguard that URL are only legal internal URLs	
+		const src = element.getAttribute('data-podium-src');
+		const url = new URL(src);
 
-	async element(element) {		
-		const response = await fetch(this.url);
+		const response = await fetch(url, {
+			headers: {
+				'x-podium-proxy': 'true'
+			}
+		});
 		const body = await response.text();
-		element.replace(body, { html: true });
+		console.log('XXX', body);
+		element.replace(body, { html: true });		
 	}
 }
 
@@ -40,7 +45,7 @@ export default {
 		// Figure out where to proxy the request
 		const upstream = new URL(request.url);
 		
-		if (upstream.pathname === '/' || upstream.pathname.startsWith('/static/')) {
+		if (upstream.pathname === '/' || upstream.pathname.startsWith('/horizontal/') || upstream.pathname.startsWith('/static/')) {
 			upstream.host = 'localhost:3010';
 		
 		} else if (upstream.pathname.startsWith('/cdn/')) {
@@ -51,6 +56,9 @@ export default {
 		
 		} else if (upstream.pathname.startsWith('/b/')) {
 			upstream.host = 'localhost:3012';
+
+		} else if (upstream.pathname.startsWith('/c/')) {
+			upstream.host = 'localhost:3013';
 
 		} else {
 			return new Response(`<html><body><h1>404 - Error page provided by proxy</h1></body></html>`, {
@@ -85,8 +93,7 @@ export default {
 			const rewriter = new HTMLRewriter()
 			.on('script', new LinkRewriter('src', request.url))
 			.on('link', new LinkRewriter('href', request.url))
-			.on('header#header', new ComponentRewriter('http://localhost:3001/'))
-			.on('div#count', new ComponentRewriter('http://localhost:3002/'));
+			.on(`[data-podium-component="true"]`, new ComponentRewriter());
 
 			// Return transformed HTML document
 		  	return rewriter.transform(response);

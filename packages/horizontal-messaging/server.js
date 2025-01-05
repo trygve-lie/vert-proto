@@ -8,7 +8,7 @@ import document from 'module-application/document';
 import frame from 'module-application/frame';
 
 const app = Fastify({
-  logger: true
+  logger: true,
 });
 
 app.get('/', async function handler (request, reply) {
@@ -18,7 +18,13 @@ app.get('/', async function handler (request, reply) {
 
     // Production mode
     if (request.headers['x-podium-proxy'] === 'true') {
-      const fragment = html`<h1>Modern marketplace</h1>`;
+      const fragment = html`<div id="count" class="counter">
+        <h3>Messages:</h3>
+        <p>Unread messages: <span id="counter">1</span></p>
+        
+        <h4>Message to:</h4> 
+        <p id="newMsg"></p>
+      </div>`;
       
       return new RenderResultReadable(render(fragment, {
         deferHydration: false
@@ -28,7 +34,13 @@ app.get('/', async function handler (request, reply) {
     // Development mode
     const page = html`
       <app-frame>
-          <h1 slot="header">Modern marketplace</h1>
+        <div slot="messaging" id="count" class="counter">
+          <h3>Messages:</h3>
+          <p>Unread messages: <span id="counter">1</span></p>
+          
+          <h4>Message to:</h4> 
+          <p id="newMsg"></p>
+        </div>
       </app-frame>
     `;
 
@@ -43,7 +55,7 @@ app.register(fileServer, {
 });
 
 try {
-  await app.listen({ port: 3001 })
+  await app.listen({ port: 3002 })
 } catch (err) {
   app.log.error(err)
   process.exit(1)

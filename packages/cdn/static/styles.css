@@ -27,51 +27,17 @@ fieldset {
 	min-width: 0;
 }
 
-/* Grid */
-.page {
-	display: grid;
-	grid-template-areas:
-	  "header header"
-	  "aside main";
-	grid-template-columns: 1fr 4fr;
-	background-color: #7fa99b;
-}
 
-.header {
-	grid-area: header;
-	height: 8vh;
-	padding: 15px;
-}
+/* Frame markers */
 
-.aside {
-	grid-area: aside;
-	height: 92vh;
-	padding: 0 15px;
-}
-
-.main {
-	grid-area: main;
-	height: 92vh;
-	padding: 0 15px 15px 0;
+/* Search */
+.search-result li {
+	padding-top: 5px;
 }
 
 
-.slot {
-	border: dotted 2px #394a51;
-}
 
-#slot-aside {
-	margin-top: 15px;
-	height: 150px;
-}
 
-#slot-main {
-	height: 100%;
-}
-
-#slot-main p {
-	margin-top: 15px;
-}
 
 /* Navigation */
 .navigation li {
@@ -125,13 +91,6 @@ fieldset {
 
 
 
-.orange h1 {
-	color: orange;
-}
-
-.blue h1 {
-	color: blue;
-}
 
 .large h1 {
 	font-size: 48px;

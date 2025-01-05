@@ -43,15 +43,26 @@ navigation.addEventListener("navigate", (e) => {
 			const doc = parser.parseFromString(html, "text/html");
 
 			const $title = doc.querySelector("head title");
-			const $aside = doc.querySelector("#slot-aside");
+
+			const $search = doc.querySelector('[slot="search"]');
+			const $main = doc.querySelector('[slot="main"]');
+			/*
+			const $search = doc.querySelector("#slot-search");
 			const $main = doc.querySelector("#slot-main");
+			*/
 
 			document.title = $title.innerText;
-			const aside = document.querySelector("#slot-aside");
+			const search = document.querySelector('[slot="search"]');
+			const main = document.querySelector('[slot="main"]');
+			/*
+			const search = document.querySelector("#slot-search");
 			const main = document.querySelector("#slot-main");
+			*/
 
-			aside.replaceWith($aside);
-			main.replaceWith($main);
+			// search.replaceWith($search);
+			search.setHTMLUnsafe($search.getHTML());
+			// main.replaceWith($main);
+			main.setHTMLUnsafe($main.getHTML());
 
 			// Load and execute document script
 			const $script = doc.querySelector("#script");
